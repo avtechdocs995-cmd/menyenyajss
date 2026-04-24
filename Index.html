@@ -1,0 +1,2008 @@
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+<meta charset="UTF-8" />  
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />  
+<title>avtech systems</title> 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>  
+  :root{  
+    --bg:#f5f7fb;  
+    --card:#ffffff;  
+    --line:#d7deea;  
+    --ink:#1f2937;  
+    --muted:#6b7280;  
+    --primary:#2563eb;  
+    --primary-dark:#1d4ed8;  
+    --success:#16a34a;  
+    --danger:#dc2626;  
+    --shadow:0 10px 24px rgba(15,23,42,.08);  
+    --radius:16px;  
+  }  
+  *{box-sizing:border-box}  
+  body{  
+    margin:0;  
+    padding:16px;  
+    background:var(--bg);  
+    color:var(--ink);  
+    font-family:Arial, Helvetica, sans-serif;  
+  }  
+  h1{  
+    margin:6px 0 14px;  
+    text-align:center;  
+    font-size:28px;  
+    letter-spacing:.4px;  
+  }  
+  .subtle{  
+    color:var(--muted);  
+    text-align:center;  
+    margin-top:-6px;  
+    margin-bottom:16px;  
+    font-size:13px;  
+  }  
+  .nav{  
+    display:flex;  
+    flex-wrap:wrap;  
+    gap:8px;  
+    justify-content:center;  
+    margin-bottom:16px;  
+  }  
+  .nav button,  
+  .toolbar button,  
+  .action-btn,  
+  .primary-btn,  
+  .danger-btn,  
+  .ghost-btn{  
+    border:none;  
+    border-radius:10px;  
+    padding:10px 14px;  
+    cursor:pointer;  
+    font-weight:700;  
+    transition:.15s ease;  
+  }  
+  .nav button{  
+    background:var(--primary);  
+    color:#fff;  
+  }  
+  .nav button:hover,  
+  .toolbar button:hover,  
+  .primary-btn:hover,  
+  .action-btn:hover{  
+    transform:translateY(-1px);  
+    background:var(--primary-dark);  
+  }  
+  .panel{  
+    display:none;  
+    background:var(--card);  
+    border:1px solid var(--line);  
+    border-radius:var(--radius);  
+    box-shadow:var(--shadow);  
+    padding:14px;  
+    margin-bottom:16px;  
+  }  
+  .panel.active{display:block}  
+  .panel h2{  
+    margin:0 0 12px;  
+    font-size:20px;  
+  }  
+  .toolbar{  
+    display:flex;  
+    flex-wrap:wrap;  
+    gap:8px;  
+    align-items:center;  
+    margin-bottom:12px;  
+  }  
+  .inputs{  
+    display:grid;  
+    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));  
+    gap:8px;  
+    margin-bottom:10px;  
+  }  
+  input, select{  
+    width:100%;  
+    padding:10px 12px;  
+    border:1px solid #cfd6e4;  
+    border-radius:10px;  
+    background:#fff;  
+    color:var(--ink);  
+    outline:none;  
+  }  
+  input:focus, select:focus{  
+    border-color:var(--primary);  
+    box-shadow:0 0 0 3px rgba(37,99,235,.12);  
+  }  
+  table{  
+    width:100%;  
+    border-collapse:collapse;  
+    margin-top:10px;  
+    background:#fff;  
+  }  
+  th,td{  
+    border:1px solid #dbe3ef;  
+    padding:8px 7px;  
+    text-align:center;  
+    font-size:14px;  
+    vertical-align:middle;  
+  }  
+  th{  
+    background:#eef4ff;  
+    position:sticky;  
+    top:0;  
+    z-index:1;  
+  }  
+  .table-wrap{  
+    overflow:auto;  
+    border:1px solid var(--line);  
+    border-radius:12px;  
+  }  
+  .muted{  
+    color:var(--muted);  
+    font-size:13px;  
+  }  
+  .row{  
+    display:flex;  
+    flex-wrap:wrap;  
+    gap:10px;  
+    align-items:flex-start;  
+  }  
+  .col{  
+    flex:1 1 320px;  
+    min-width:280px;  
+  }  
+  .school-header{  
+    display:flex;  
+    align-items:center;  
+    gap:12px;  
+    margin-bottom:12px;  
+    padding:10px 12px;  
+    border:1px solid var(--line);  
+    border-radius:14px;  
+    background:linear-gradient(180deg,#fff,#f8fbff);  
+  }  
+.login-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: url("logo.jpg") no-repeat center;
+  background-size: 250px;
+
+  background-color: #fff3e0;
+}
+
+/* orange overlay (not fading too much) */
+.login-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,183,77,0.7);
+}
+
+.login-box {
+  position: relative;
+  z-index: 2;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 280px;
+}
+
+/* ORANGE BUTTON */
+.login-box button {
+  background: #e65100;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.login-box button:hover {
+  background: #bf360c;
+}
+  .school-title{  
+    flex:1;  
+    text-align:center;  
+    padding-right:58px;  
+  }  
+  .school-title h3{  
+    margin:0;  
+    font-size:22px;  
+    letter-spacing:.5px;  
+  }  
+  .school-title p{  
+    margin:4px 0 0;  
+    font-size:13px;  
+    color:var(--muted);  
+  }  
+  .report-card{  
+    border:1px solid #cfd6e4;  
+    border-radius:16px;  
+    padding:12px;  
+    margin-top:14px;  
+    background:#fff;  
+    page-break-after:always;  
+    break-after:page;  
+  }  
+  .report-meta{  
+    display:grid;  
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));  
+    gap:8px;  
+    margin:10px 0 12px;  
+    font-size:14px;  
+  }  
+  .summary-box{  
+    border:1px solid var(--line);  
+    border-radius:14px;  
+    padding:10px;  
+    background:#fbfdff;  
+    margin-top:12px;  
+  }  
+  .badge{  
+    display:inline-block;  
+    padding:4px 8px;  
+    border-radius:999px;  
+    background:#eef4ff;  
+    color:#1d4ed8;  
+    font-size:12px;  
+    font-weight:700;  
+    margin-right:6px;  
+    margin-bottom:6px;  
+  }  
+  .toast{  
+    position:fixed;  
+    right:16px;  
+    bottom:16px;  
+    background:#111827;  
+    color:#fff;  
+    padding:10px 14px;  
+    border-radius:12px;  
+    box-shadow:var(--shadow);  
+    opacity:0;  
+    transform:translateY(10px);  
+    transition:.2s ease;  
+    z-index:9999;  
+    pointer-events:none;  
+  }  
+  .toast.show{  
+    opacity:1;  
+    transform:translateY(0);  
+  }  
+  .actions-cell button{  
+    margin:2px;  
+    padding:7px 10px;  
+    border:none;  
+    border-radius:9px;  
+    color:#fff;  
+    cursor:pointer;  
+    font-weight:700;  
+  }  
+  .edit-btn{background:#0ea5e9}  
+  .delete-btn{background:var(--danger)}  
+  .ok-btn{background:var(--success)}  
+  .ghost-btn{background:#e5e7eb;color:#111827}  
+  .primary-btn{background:var(--primary);color:#fff}  
+  .danger-btn{background:var(--danger);color:#fff}  
+  .small-note{margin:6px 0 0;color:var(--muted);font-size:12px}  
+.analysis-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:12px;
+}
+
+/* ================= PRINT FIX ================= */
+@media print {
+
+  body * {
+    visibility: hidden;
+  }
+/* HIDE ANALYSIS DROPDOWNS */
+body.analysis-print #analysis .inputs {
+  display: none !important;
+}
+
+/* HIDE REPORT FILTERS */
+body.report-print #reports .inputs {
+  display: none !important;
+}
+/* HIDE ANALYSIS TITLE */
+body.analysis-print #analysis h2 {
+  display: none !important;
+}
+
+/* HIDE REPORT TITLE */
+body.report-print #reports h2 {
+  display: none !important;
+}
+  /* SHOW ONLY ANALYSIS */
+  body.analysis-print #analysis,
+  body.analysis-print #analysis * {
+    visibility: visible;
+  }
+
+  /* SHOW ONLY REPORTS */
+  body.report-print #reports,
+  body.report-print #reports * {
+    visibility: visible;
+  }
+
+  /* POSITION PRINT AREA */
+  #analysis, #reports {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  /* REMOVE NAV, HEADER, BUTTONS */
+  .nav,
+  .toolbar,
+  h1,
+  .subtle,
+  .no-print {
+    display: none !important;
+  }
+
+  /* REMOVE EXTRA SPACING */
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* PERFECT REPORT CARD BREAKS */
+  .report-card {
+    page-break-after: always;
+    break-after: page;
+  }
+
+}
+</style>  
+</head>  
+<body>  
+<div id="loginScreen" class="login-screen">
+
+  <div class="login-box">
+
+  
+  <h2>School Login</h2>
+
+  <input id="loginSchool" placeholder="School ID">
+  <input id="loginUser" placeholder="admin or teacher">
+  <input id="loginPass" type="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+
+  <p id="loginError" style="color:red;"></p>
+</div>
+</div>
+<h1>MENYENYA SDA JUNIOR SCHOOL - AVTECH EXAM MANAGEMENT</h1>  
+<div class="subtle">Contact avtechdocs995@gmail.com</div>  <div class="nav no-print">  
+  <button data-panel="students">Register Students</button>  
+  <button data-panel="subjects">Register Subjects</button>  
+  <button data-panel="marks">Marks Entry</button>  
+  <button data-panel="analysis">Analysis</button>  
+  <button data-panel="reports">Report Cards</button>  
+  <button data-panel="backup">Backup Viewer</button>
+  <button onclick="exportBackup()">Download Backup</button>
+  <button onclick="showBackupTable()">Backup Table</button>
+<button onclick="exportBackup()">Download Backup</button>
+<button onclick="restoreBackup()">Restore Backup</button>
+<div id="backupTableArea" class="panel">
+  <h2>Backup Table View</h2>
+  <div id="backupTableOutput"></div>
+</div>
+</div>  <div id="students" class="panel active">  
+<input type="file" id="restoreFile" accept=".json" style="display:none;">
+  <h2>Register Student</h2>  
+  <div class="inputs">  
+    <input id="adm" placeholder="Admission Number" autocomplete="off">  
+    <input id="name" placeholder="Full Name" autocomplete="off">  
+    <select id="grade"></select>  
+    <select id="stream"></select>  
+    <select id="pathway"></select>  
+    <select id="gender">
+  <option value="">Select Gender</option>
+  <option value="Male">Male</option>
+  <option value="Female">Female</option>
+</select>
+  </div>  
+  <div class="toolbar no-print">  
+    <button id="saveStudentBtn" class="primary-btn">Save Student</button>  
+    <button id="clearStudentBtn" class="ghost-btn">Clear</button>  
+        <button id="printClassListBtn" class="ghost-btn">Print Class List</button>  
+  </div>  
+  <div class="table-wrap">  
+    <table id="studentTable"></table>  
+  </div>  
+</div>  <div id="subjects" class="panel">  
+  <h2>Register Subjects</h2>  
+  <div class="inputs">  
+    <input id="subName" placeholder="Subject Name" autocomplete="off">  
+    <select id="subPath"></select>  
+  </div>  
+  <div class="toolbar no-print">  
+    <button id="saveSubjectBtn" class="primary-btn">Add Subject</button>  
+    <button id="clearSubjectBtn" class="ghost-btn">Clear</button>  
+  </div>  
+  <div class="table-wrap">  
+    <table id="subjectTable"></table>  
+  </div>  
+  <div class="small-note">Subjects are linked to a pathway and used automatically in analysis/report cards.</div>  
+</div>  <div id="marks" class="panel">  
+  <h2>Marks Entry</h2>  
+  <div class="inputs">  
+    <select id="mExam"></select>  
+    <select id="mGrade"></select>  
+    <select id="mStream"></select>  
+    <select id="mTerm"></select>  
+    <select id="mYear"></select>  
+    <select id="mSubject"></select>  
+  </div>  
+  <div class="toolbar no-print">  
+    <button id="loadMarksBtn" class="primary-btn">Load Students</button>  
+    <button id="saveMarksBtn" class="ok-btn">Save Marks</button>  
+  </div>  
+  <div class="small-note" id="marksInfo"></div>  
+  <div class="table-wrap">  
+    <table id="marksTable"></table>  
+  </div>  
+</div>  <div id="analysis" class="panel">  
+  <h2>Analysis</h2>  
+  <div class="inputs">  
+    <select id="aExam"></select>  
+    <select id="aGrade"></select>  
+    <select id="aStream"></select>  
+    <select id="aTerm"></select>  
+    <select id="aYear"></select>  
+  </div>  
+  <div class="toolbar no-print">  
+    <button id="generateAnalysisBtn" class="primary-btn">Generate Analysis</button>  
+    <button id="printAnalysisBtn" class="ghost-btn">Print / PDF</button>  
+  </div>    <div id="analysisOut"></div>    <div class="analysis-grid">  
+    <div class="summary-box">  
+      <h3 style="margin-top:0">Top 10 Students</h3>  
+      <div class="table-wrap">  
+        <table id="top10Table"></table>  
+      </div>  
+    </div>  <div class="summary-box">  
+  <h3 style="margin-top:0">Best Student per Subject</h3>  
+  <div class="table-wrap">  
+    <table id="bestSubjectTable"></table>  
+  </div>  
+</div>
+
+  </div>  
+</div>  <div id="reports" class="panel">  
+  <h2>Report Cards</h2>  
+  <div class="inputs">  
+    <select id="rGrade"></select>  
+    <select id="rStream"></select>  
+    <select id="rTerm"></select>  
+    <select id="rYear"></select> 
+    <input id="rClassTeacher" placeholder="Class Teacher Name">
+<input id="rOpeningDate" type="date">
+<input id="rClosingDate" type="date">
+  </div>  
+  <div class="toolbar no-print">  
+    <button id="generateReportsBtn" class="primary-btn">Load Report Cards</button>  
+    <button id="printReportsBtn" class="ghost-btn">Print / PDF</button>  
+  </div>  
+<div id="backup" class="panel">
+  <h2>Backup Viewer</h2>
+
+  <div class="inputs">
+    <input type="file" id="backupFile" accept=".json">
+  </div>
+
+  <div class="toolbar no-print">
+    <button class="primary-btn" onclick="loadBackupTable()">View Backup Table</button>
+  </div>
+
+  <div id="backupOutput"></div>
+</div>
+<div id="reportsOut"></div>
+
+
+<!-- ADD GRAPHS BELOW REPORTS -->
+<div id="reportCharts" class="summary-box no-print">
+  <h3 style="margin-top:0">Performance Graphs</h3>
+
+  <canvas id="examComparisonChart"></canvas>
+  <canvas id="subjectPerformanceChart"></canvas>
+</div>
+</div>  <div id="toast" class="toast"></div>  <script>  
+document.addEventListener("DOMContentLoaded", () => {  
+  const dbName = "ExamDB";  
+  let db = null;  
+  let editingStudentAdm = null;  
+  let editingSubjectId = null;  
+  
+  const el = (id) => document.getElementById(id);  
+  
+  const storeReady = new Promise((resolve, reject) => {  
+    const req = indexedDB.open(dbName, 1);  
+  
+    req.onupgradeneeded = (e) => {  
+      const d = e.target.result;  
+  
+      if (!d.objectStoreNames.contains("students")) {  
+        d.createObjectStore("students", { keyPath: "adm" });  
+      }  
+  
+      if (!d.objectStoreNames.contains("subjects")) {  
+        const s = d.createObjectStore("subjects", { keyPath: "id", autoIncrement: true });  
+        s.createIndex("pathway", "pathway", { unique: false });  
+      }  
+  
+      if (!d.objectStoreNames.contains("exams")) {  
+        d.createObjectStore("exams", { keyPath: "key" });  
+      }  
+  
+      if (!d.objectStoreNames.contains("marks")) {  
+        const m = d.createObjectStore("marks", { keyPath: "key" });  
+        m.createIndex("adm", "adm", { unique: false });  
+        m.createIndex("setup", ["grade", "stream", "exam", "term", "year"], { unique: false });  
+      }  
+    };  
+  
+    req.onsuccess = (e) => {  
+      db = e.target.result;  
+      resolve();  
+    };  
+  
+    req.onerror = () => reject(req.error);  
+  });  
+  
+  const toast = (msg) => {  
+    const t = el("toast");  
+    t.textContent = msg;  
+    t.classList.add("show");  
+    clearTimeout(toast._timer);  
+    toast._timer = setTimeout(() => t.classList.remove("show"), 1800);  
+  };  
+  
+  const gradeBands = (avg) => {  
+    if (avg >= 90) return "EE1";  
+    if (avg >= 85) return "EE1";  
+    if (avg >= 80) return "EE2";  
+    if (avg >= 75) return "EE2";  
+    if (avg >= 70) return "ME1";  
+    if (avg >= 65) return "ME1";  
+    if (avg >= 60) return "ME1";  
+    if (avg >= 55) return "ME2";  
+    if (avg >= 50) return "ME2";  
+    if (avg >= 45) return "AE1";  
+    if (avg >= 40) return "AE2";  
+    return "BE1";  
+  };  
+  function getComments(grade) {
+  let teacherComment = "";
+  let headComment = "";
+
+  // Class Teacher Comment
+  if (["EE1","EE2"].includes(grade)) {
+    teacherComment = "The learner exceeds expectations.";
+  } else if (["ME1","ME2"].includes(grade)) {
+    teacherComment = "The learner meets expectations.";
+  } else if (["AE1","AE2"].includes(grade)) {
+    teacherComment = "The learner is approaching expectations.";
+  } else if (["BE1","BE2"].includes(grade)) {
+    teacherComment = "The learner is below expectations.";
+  }
+
+  // Headteacher Comment
+  switch(grade) {
+    case "EE1":
+      headComment = "Outstanding performance. Keep it up!";
+      break;
+    case "EE2":
+      headComment = "Excellent work. Maintain the effort.";
+      break;
+    case "ME1":
+      headComment = "Very good performance. Keep it up!";
+      break;
+    case "ME2":
+      headComment = "Good work. Continue working hard.";
+      break;
+    case "AE1":
+      headComment = "Fair performance. Put more effort to improve.";
+      break;
+    case "AE2":
+      headComment = "Satisfactory work. More effort is needed.";
+      break;
+    case "BE1":
+      headComment = "Below expectations. Work harder.";
+      break;
+    case "BE2":
+      headComment = "Poor performance. Immediate improvement is required.";
+      break;
+  }
+
+  return { teacherComment, headComment };
+}
+  const markKey = (o) => [o.adm, o.subject, o.exam, o.grade, o.stream, o.term, o.year].join("|");  
+  const examKey = (o) => [o.grade, o.stream, o.exam, o.term, o.year].join("|");  
+  
+  const reqPromise = (req) => new Promise((resolve, reject) => {  
+    req.onsuccess = () => resolve(req.result);  
+    req.onerror = () => reject(req.error);  
+  });  
+  
+  const txDone = (tx) => new Promise((resolve, reject) => {  
+    tx.oncomplete = () => resolve();  
+    tx.onerror = () => reject(tx.error);  
+    tx.onabort = () => reject(tx.error);  
+  });  
+  
+  const getAll = async (store) => {  
+    const tx = db.transaction(store, "readonly");  
+    return await reqPromise(tx.objectStore(store).getAll());  
+  };  
+  
+  const getByKey = async (store, key) => {  
+    const tx = db.transaction(store, "readonly");  
+    return await reqPromise(tx.objectStore(store).get(key));  
+  };  
+  
+  const put = async (store, value) => {  
+    const tx = db.transaction(store, "readwrite");  
+    tx.objectStore(store).put(value);  
+    await txDone(tx);  
+  };  
+  
+  const add = async (store, value) => {  
+    const tx = db.transaction(store, "readwrite");  
+    tx.objectStore(store).add(value);  
+    await txDone(tx);  
+  };  
+  
+  const del = async (store, key) => {  
+    const tx = db.transaction(store, "readwrite");  
+    tx.objectStore(store).delete(key);  
+    await txDone(tx);  
+  };  
+  
+  const clearForm = (ids) => {  
+    ids.forEach(id => {  
+      const node = el(id);  
+      if (!node) return;  
+      if (node.tagName === "SELECT") node.selectedIndex = 0;  
+      else node.value = "";  
+    });  
+  };  
+  
+  const fillSelect = (id, values, placeholder = "Select") => {  
+    const sel = el(id);  
+    sel.innerHTML = "";  
+    sel.add(new Option(placeholder, ""));  
+    values.forEach(v => sel.add(new Option(v, v)));  
+  };  
+  
+  const fillYears = (id) => {  
+    const sel = el(id);  
+    sel.innerHTML = "";  
+    sel.add(new Option("Select", ""));  
+    for (let y = 2026; y <= 2050; y++) sel.add(new Option(String(y), String(y)));  
+  };  
+  
+  const navButtons = document.querySelectorAll(".nav button[data-panel]");  
+  const panels = document.querySelectorAll(".panel");  
+  const showPanel = (name) => {  
+    panels.forEach(p => p.classList.remove("active"));  
+    el(name).classList.add("active");  
+  };  
+  
+  navButtons.forEach(btn => btn.addEventListener("click", () => showPanel(btn.dataset.panel)));  
+  
+  function populateAllSelects() {  
+    const grades = [7,8,9];  
+    const streams = ["East","West","North","South","Red","Blue"];  
+    const pathways = ["STEM","Social Sciences","Arts & Sports"];  
+    const exams = ["Opening","Midterm","Endterm"];  
+  
+    fillSelect("grade", grades, "Select grade");  
+    fillSelect("stream", streams, "Select stream");  
+    fillSelect("pathway", pathways, "Select pathway");  
+    fillSelect("subPath", pathways, "Select pathway");  
+  
+    fillSelect("mExam", exams, "Select exam");  
+    fillSelect("mGrade", grades, "Select grade");  
+    fillSelect("mStream", streams, "Select stream");  
+    fillSelect("mTerm", [1,2,3], "Select term");  
+    fillYears("mYear");  
+  
+    fillSelect("aExam", exams, "Select exam");  
+    fillSelect("aGrade", grades, "Select grade");  
+    fillSelect("aStream", streams, "Select stream");  
+    fillSelect("aTerm", [1,2,3], "Select term");  
+    fillYears("aYear");  
+  
+    fillSelect("rGrade", grades, "Select grade");  
+    fillSelect("rStream", streams, "Select stream");  
+    fillSelect("rTerm", [1,2,3], "Select term");  
+    fillYears("rYear");  
+  
+    fillSelect("mSubject", [], "Select subject");  
+  }  
+  
+  async function loadSubjectsIntoUI() {  
+    const subjects = await getAll("subjects");  
+    const subjectTable = el("subjectTable");  
+    const markSubject = el("mSubject");  
+  
+    markSubject.innerHTML = "";  
+    markSubject.add(new Option("Select subject", ""));  
+  
+    let html = "<tr><th>Subject</th><th>Pathway</th><th>Gender</th><th>Action</th></tr>";   
+    subjects.forEach(s => {  
+      html += `<tr>  
+        <td>${escapeHtml(s.name)}</td>  
+<td>${escapeHtml(s.pathway)}</td> 
+        <td class="actions-cell">  
+          <button class="edit-btn" data-subject-action="edit" data-id="${s.id}">Edit</button>  
+          <button class="delete-btn" data-subject-action="delete" data-id="${s.id}">Delete</button>  
+        </td>  
+      </tr>`;  
+      markSubject.add(new Option(s.name, s.name));  
+    });  
+    subjectTable.innerHTML = html;  
+  }  
+  
+  async function loadStudentsIntoUI() {  
+    const students = await getAll("students");  
+let html = "<tr><th>Adm</th><th>Name</th><th>Grade</th><th>Stream</th><th>Pathway</th><th>Action</th></tr>";
+    students.forEach(s => {  
+      html += `<tr>  
+        <td>${escapeHtml(s.adm)}</td>  
+        <td>${escapeHtml(s.name)}</td>  
+        <td>${escapeHtml(s.grade)}</td>  
+        <td>${escapeHtml(s.stream)}</td>  
+        <td>${escapeHtml(s.pathway)}</td>  
+        <td class="actions-cell">  
+          <button class="edit-btn" data-student-action="edit" data-adm="${escapeAttr(s.adm)}">Edit</button>  
+          <button class="delete-btn" data-student-action="delete" data-adm="${escapeAttr(s.adm)}">Delete</button>  
+        </td>  
+      </tr>`;  
+    });  
+    el("studentTable").innerHTML = html;  
+  }  
+  
+  async function saveStudent() {  
+    const adm = el("adm").value.trim();  
+    const name = el("name").value.trim();  
+    const grade = el("grade").value;  
+    const stream = el("stream").value;  
+    const pathway = el("pathway").value;  const gender = el("gender").value;
+  
+    if (!adm || !name || !grade || !stream || !pathway || !gender) {
+      toast("Enter all fields");  
+      return;  
+    }  
+  
+    const student = { adm, name, grade, stream, pathway, gender };  
+    await put("students", student);  
+    editingStudentAdm = null;  
+    el("saveStudentBtn").textContent = "Save Student";  
+    clearForm(["adm","name","grade","stream","pathway","gender"]);  
+    await loadStudentsIntoUI();  
+    toast("Student saved");  
+  }  
+  
+  async function editStudent(adm) {  
+    const s = await getByKey("students", adm);  
+    if (!s) return;  
+    el("adm").value = s.adm;  
+    el("name").value = s.name;  
+    el("grade").value = s.grade;  
+    el("stream").value = s.stream;  
+    el("pathway").value = s.pathway;  
+    el("gender").value = s.gender || "";
+    editingStudentAdm = s.adm;  
+    el("saveStudentBtn").textContent = "Update Student";  
+    showPanel("students");  
+  }  
+  
+  async function deleteStudent(adm) {  
+    if (!confirm("Delete this student and their marks?")) return;  
+    await del("students", adm);  
+  
+    const marks = await getAll("marks");  
+    const tx = db.transaction("marks", "readwrite");  
+    const store = tx.objectStore("marks");  
+    marks.filter(m => m.adm === adm).forEach(m => store.delete(m.key));  
+    await txDone(tx);  
+  
+    await loadStudentsIntoUI();  
+    toast("Student deleted");  
+  }  
+  
+  async function saveSubject() {  
+    const name = el("subName").value.trim();  
+    const pathway = el("subPath").value;  
+  
+    if (!name || !pathway) {  
+      toast("Enter all fields");  
+      return;  
+    }  
+  
+    const subject = { name, pathway };  
+    if (editingSubjectId) {  
+      subject.id = editingSubjectId;  
+      await put("subjects", subject);  
+      editingSubjectId = null;  
+      el("saveSubjectBtn").textContent = "Add Subject";  
+    } else {  
+      await add("subjects", subject);  
+    }  
+  
+    clearForm(["subName","subPath"]);  
+    await loadSubjectsIntoUI();  
+    toast("Subject saved");  
+  }  
+  
+  async function editSubject(id) {  
+    const subjects = await getAll("subjects");  
+    const s = subjects.find(x => String(x.id) === String(id));  
+    if (!s) return;  
+    el("subName").value = s.name;  
+    el("subPath").value = s.pathway;  
+    editingSubjectId = s.id;  
+    el("saveSubjectBtn").textContent = "Update Subject";  
+    showPanel("subjects");  
+  }  
+  
+  async function deleteSubject(id) {  
+    if (!confirm("Delete this subject and its marks?")) return;  
+    await del("subjects", Number(id));  
+  
+    const marks = await getAll("marks");  
+    const tx = db.transaction("marks", "readwrite");  
+    const store = tx.objectStore("marks");  
+    marks.filter(m => m.subjectId === Number(id)).forEach(m => store.delete(m.key));  
+    await txDone(tx);  
+  
+    await loadSubjectsIntoUI();  
+    toast("Subject deleted");  
+  }  
+  
+  async function loadMarksStudents() {  
+    const exam = el("mExam").value;  
+    const grade = el("mGrade").value;  
+    const stream = el("mStream").value;  
+    const term = el("mTerm").value;  
+    const year = el("mYear").value;  
+    const subject = el("mSubject").value;  
+  
+    if (!exam || !grade || !stream || !term || !year || !subject) {  
+      toast("Select exam, grade, stream, term, year and subject");  
+      return;  
+    }  
+  
+    const students = await getAll("students");  
+    const marks = await getAll("marks");  
+  
+    const filteredStudents = students.filter(s => s.grade === grade && s.stream === stream);  
+  
+    const setup = { exam, grade, stream, term, year };  
+    el("marksInfo").innerHTML = `  
+      <span class="badge">Exam: ${escapeHtml(exam)}</span>  
+      <span class="badge">Grade: ${escapeHtml(grade)}</span>  
+      <span class="badge">Stream: ${escapeHtml(stream)}</span>  
+      <span class="badge">Term: ${escapeHtml(term)}</span>  
+      <span class="badge">Year: ${escapeHtml(year)}</span>  
+      <span class="badge">Subject: ${escapeHtml(subject)}</span>  
+    `;  
+  
+    let html = "<tr><th>Adm No</th><th>Name</th><th>Marks</th></tr>";  
+    filteredStudents.forEach(s => {  
+      const existing = marks.find(m =>  
+        m.adm === s.adm &&  
+        m.subject === subject &&  
+        m.exam === exam &&  
+        m.grade === grade &&  
+        m.stream === stream &&  
+        m.term === term &&  
+        m.year === year  
+      );  
+      html += `<tr>  
+        <td>${escapeHtml(s.adm)}</td>  
+        <td>${escapeHtml(s.name)}</td>  
+        <td><input class="mark-input" data-adm="${escapeAttr(s.adm)}" value="${existing ? escapeAttr(existing.score) : ""}" placeholder="0-100"></td>  
+      </tr>`;  
+    });  
+  
+    el("marksTable").innerHTML = html;  
+  
+    if (!filteredStudents.length) {  
+      toast("No students found for the selected grade and stream");  
+    }  
+  }  
+  
+  async function saveMarks() {  
+  
+  const exam = el("mExam").value;  
+  const grade = el("mGrade").value;  
+  const stream = el("mStream").value;  
+  const term = el("mTerm").value;  
+  const year = el("mYear").value;  
+  const subject = el("mSubject").value;  
+  
+  // STRICT CHECK  
+  if (!exam || !grade || !stream || !term || !year || !subject) {  
+    toast("Select ALL fields before saving marks");  
+    return;  
+  }  
+  
+  const inputs = document.querySelectorAll(".mark-input");  
+  
+  if (inputs.length === 0) {  
+    toast("Load students first");  
+    return;  
+  }  
+  
+  const students = await getAll("students");  
+  
+  const tx = db.transaction(["marks"], "readwrite");  
+  const store = tx.objectStore("marks");  
+  
+  inputs.forEach(inp => {  
+  
+    const adm = inp.dataset.adm;  
+    const student = students.find(s => s.adm === adm);  
+  
+    if (!student) return;  
+  
+    let score = inp.value.trim();  
+  
+    // FIX: allow empty but convert properly  
+    if (score === "") score = "";  
+    else score = Number(score);  
+  
+    const record = {  
+      key: adm + "_" + subject + "_" + exam + "_" + term + "_" + year,  
+      adm: adm,  
+      name: student.name,  
+      subject: subject,  
+      exam: exam,  
+      grade: grade,  
+      stream: stream,  
+      term: term,  
+      year: year,  
+      score: score  
+    };  
+  
+    console.log("Saving:", record); // DEBUG  
+  
+    store.put(record);  
+  });  
+  
+  tx.oncomplete = () => {  
+    toast("Marks saved successfully ✅");  
+  };  
+  
+  tx.onerror = () => {  
+    console.error(tx.error);  
+    toast("Error saving marks ❌");  
+  };  
+}  
+  
+  async function generateAnalysis() {  
+    const exam = el("aExam").value;  
+    const grade = el("aGrade").value;  
+    const stream = el("aStream").value;  
+    const term = el("aTerm").value;  
+    const year = el("aYear").value;  
+  
+    if (!exam || !grade || !stream || !term || !year) {  
+      toast("Select exam, grade, stream, term and year");  
+      return;  
+    }  
+  
+    const students = (await getAll("students")).filter(s => s.grade === grade && s.stream === stream);  
+    const subjectsAll = await getAll("subjects");  
+    const marksAll = await getAll("marks");  
+  
+    const pathways = [...new Set(students.map(s => s.pathway))];  
+    const analysisSubjects = subjectsAll  
+      .filter(s => pathways.includes(s.pathway))  
+      .sort((a, b) => a.pathway.localeCompare(b.pathway) || a.name.localeCompare(b.name));  
+  
+    const subjectNames = analysisSubjects.map(s => s.name);  
+    const rows = [];  
+  
+    students.forEach(s => {  
+      const scores = {};  
+      let total = 0;  
+  
+      subjectNames.forEach(sub => {  
+        const m = marksAll.find(x =>  
+          x.adm === s.adm &&  
+          x.subject === sub &&  
+          x.exam === exam &&  
+          x.grade === grade &&  
+          x.stream === stream &&  
+          x.term === term &&  
+          x.year === year  
+        );  
+        const score = m && m.score !== "" ? Number(m.score) : 0;  
+        scores[sub] = score;  
+        total += score;  
+      });  
+  
+      const avg = subjectNames.length ? total / subjectNames.length : 0;  
+      rows.push({  
+        adm: s.adm,  
+        name: s.name,  
+        pathway: s.pathway,  
+        scores,  
+        total,  
+        avg,  
+        g: gradeBands(avg)  
+      });  
+    });  
+  
+    rows.sort((a, b) => b.avg - a.avg || b.total - a.total || a.name.localeCompare(b.name));  
+    rows.forEach((r, idx) => r.rank = idx + 1);  
+  
+    const header = `  
+      <div class="school-header">  
+<div class="logo-box">  
+  <img src="logo.jpg" style="width:80px; height:80px; object-fit:contain;">  
+</div>  
+        <div class="school-title">  
+          <h3>MENYENYA SDA JUNIOR SCHOOL</h3>  
+          <p>ASSESSMENT REPORT</p>  
+        </div>  
+      </div>  
+      <div class="summary-box">  
+        <span class="badge">Exam: ${escapeHtml(exam)}</span>  
+        <span class="badge">Grade: ${escapeHtml(grade)}</span>  
+        <span class="badge">Stream: ${escapeHtml(stream)}</span>  
+        <span class="badge">Term: ${escapeHtml(term)}</span>  
+        <span class="badge">Year: ${escapeHtml(year)}</span>  
+      </div>  
+    `;  
+  
+    let table = `<div class="table-wrap"><table><tr><th>Pos</th><th>Adm</th><th>Name</th>`;  
+    subjectNames.forEach(s => table += `<th>${escapeHtml(s)}</th>`);  
+    table += `<th>Total</th><th>Average</th><th>Grade</th></tr>`;  
+  
+    rows.forEach(r => {  
+      table += `<tr>  
+        <td>${r.rank}</td>  
+        <td>${escapeHtml(r.adm)}</td>  
+        <td style="text-align:left">${escapeHtml(r.name)}</td>`;  
+      subjectNames.forEach(s => table += `<td>${r.scores[s] ?? 0}</td>`);  
+      table += `<td>${r.total}</td><td>${r.avg.toFixed(1)}</td><td>${r.g}</td></tr>`;  
+    });  
+    table += `</table></div>`;  
+  
+    // ===== SUBJECT MEANS =====
+let subjectMeansHTML = `
+<div class="summary-box">
+  <h3 style="margin-top:0">Subject Means</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Subject</th><th>Mean Score</th></tr>
+`;
+
+let totalAll = 0;
+let countAll = 0;
+
+subjectNames.forEach(sub => {
+  let total = 0;
+  let count = 0;
+
+  rows.forEach(r => {
+    const val = r.scores[sub] ?? 0;
+    total += val;
+    count++;
+  });
+
+  const mean = count ? (total / count) : 0;
+
+  subjectMeansHTML += `
+    <tr>
+      <td>${escapeHtml(sub)}</td>
+      <td>${mean.toFixed(2)}</td>
+    </tr>
+  `;
+
+  totalAll += total;
+  countAll += count;
+});
+
+subjectMeansHTML += `
+    </table>
+  </div>
+</div>
+`;
+
+// ===== MSS =====
+const MSS = countAll ? (totalAll / countAll) : 0;
+
+let mssHTML = `
+<div class="summary-box">
+  <h3 style="margin-top:0">Overall MSS</h3>
+  <span class="badge">MSS: ${MSS.toFixed(2)}</span>
+</div>
+`;
+
+// ✅ FINAL OUTPUT (IMPORTANT ORDER)
+el("analysisOut").innerHTML = header + table + mssHTML + subjectMeansHTML; 
+generateCharts(rows, subjectNames);
+  
+    const top10 = rows.slice(0, 10);  
+    let top10Html = "<tr><th>Pos</th><th>Adm</th><th>Name</th><th>Total</th><th>Avg</th><th>Grade</th></tr>";  
+    top10.forEach(r => {  
+      top10Html += `<tr><td>${r.rank}</td><td>${escapeHtml(r.adm)}</td><td>${escapeHtml(r.name)}</td><td>${r.total}</td><td>${r.avg.toFixed(1)}</td><td>${r.g}</td></tr>`;  
+    });  
+    el("top10Table").innerHTML = top10Html;  
+  
+    const best = subjectNames.map(sub => {  
+      let bestRow = null;  
+      rows.forEach(r => {  
+        const score = r.scores[sub] ?? 0;  
+        if (!bestRow || score > bestRow.score) {  
+          bestRow = { subject: sub, adm: r.adm, name: r.name, score };  
+        }  
+      });  
+      return bestRow;  
+    });  
+  
+    let bestHtml = "<tr><th>Subject</th><th>Adm</th><th>Name</th><th>Best Score</th></tr>";  
+    best.forEach(b => {  
+      bestHtml += `<tr><td>${escapeHtml(b.subject)}</td><td>${escapeHtml(b.adm)}</td><td>${escapeHtml(b.name)}</td><td>${b.score}</td></tr>`;  
+    });  
+    el("bestSubjectTable").innerHTML = bestHtml;  
+  
+    if (!rows.length) toast("No students found for the selected class");  
+  }  
+  
+  async function generateReports() {    
+
+    const grade = el("rGrade").value;    
+    const stream = el("rStream").value;    
+    const term = el("rTerm").value;    
+    const year = el("rYear").value;    
+
+    const classTeacher = el("rClassTeacher").value || "Not Assigned";
+    const openingDate = el("rOpeningDate").value || "Not Set";
+    const closingDate = el("rClosingDate").value || "Not Set";
+
+    if (!grade || !stream || !term || !year) {    
+        toast("Select grade, stream, term and year");    
+        return;    
+    }    
+
+    const students = (await getAll("students"))
+        .filter(s => s.grade === grade && s.stream === stream);    
+
+    const subjectsAll = await getAll("subjects");    
+    const marksAll = await getAll("marks");    
+
+    // ================= RANK STORAGE =================
+    const openingScores = [];
+    const midtermScores = [];
+    const endtermScores = [];
+
+    // ================= FIRST LOOP: COLLECT TOTALS =================
+    students.forEach(s => {
+
+        let openTotal = 0;
+        let midTotal = 0;
+        let endTotal = 0;
+
+        const subjList = subjectsAll.filter(x => x.pathway === s.pathway);
+
+        subjList.forEach(sub => {
+
+            const open = marksAll.find(m =>
+                m.adm === s.adm &&
+                m.subject === sub.name &&
+                m.exam === "Opening" &&
+                m.grade === grade &&
+                m.stream === stream &&
+                m.term === term &&
+                m.year === year
+            );
+
+            const mid = marksAll.find(m =>
+                m.adm === s.adm &&
+                m.subject === sub.name &&
+                m.exam === "Midterm" &&
+                m.grade === grade &&
+                m.stream === stream &&
+                m.term === term &&
+                m.year === year
+            );
+
+            const end = marksAll.find(m =>
+                m.adm === s.adm &&
+                m.subject === sub.name &&
+                m.exam === "Endterm" &&
+                m.grade === grade &&
+                m.stream === stream &&
+                m.term === term &&
+                m.year === year
+            );
+
+            if (open && open.score !== "") openTotal += Number(open.score);
+            if (mid && mid.score !== "") midTotal += Number(mid.score);
+            if (end && end.score !== "") endTotal += Number(end.score);
+
+        });
+
+        openingScores.push({ adm: s.adm, total: openTotal });
+        midtermScores.push({ adm: s.adm, total: midTotal });
+        endtermScores.push({ adm: s.adm, total: endTotal });
+
+    });
+
+    // ================= SORT RANKS =================
+    openingScores.sort((a,b)=>b.total - a.total);
+    midtermScores.sort((a,b)=>b.total - a.total);
+    endtermScores.sort((a,b)=>b.total - a.total);
+
+    function getRank(list, adm) {
+        const index = list.findIndex(x => x.adm === adm);
+        return index === -1 ? "" : index + 1;
+    }
+
+    const cards = [];    
+
+    // ================= SECOND LOOP: REPORT CARDS =================
+    students.forEach(s => {    
+
+        const subjList = subjectsAll    
+            .filter(x => x.pathway === s.pathway)    
+            .sort((a, b) => a.name.localeCompare(b.name));    
+
+        const subjectRows = [];    
+
+        const openingRank = getRank(openingScores, s.adm);
+        const midtermRank = getRank(midtermScores, s.adm);
+        const endtermRank = getRank(endtermScores, s.adm);
+
+        let overallTotal = 0;    
+        let overallCount = 0;   
+
+        let openingTotal = 0;
+        let midtermTotal = 0;
+        let endtermTotal = 0;
+
+        subjList.forEach(sub => {    
+
+            const open = marksAll.find(m =>
+                m.adm === s.adm &&
+                m.subject === sub.name &&
+                m.exam === "Opening" &&
+                m.grade === grade &&
+                m.stream === stream &&
+                m.term === term &&
+                m.year === year
+            );    
+
+            const mid = marksAll.find(m =>
+                m.adm === s.adm &&
+                m.subject === sub.name &&
+                m.exam === "Midterm" &&
+                m.grade === grade &&
+                m.stream === stream &&
+                m.term === term &&
+                m.year === year
+            );    
+
+            const end = marksAll.find(m =>
+                m.adm === s.adm &&
+                m.subject === sub.name &&
+                m.exam === "Endterm" &&
+                m.grade === grade &&
+                m.stream === stream &&
+                m.term === term &&
+                m.year === year
+            );    
+
+            const vals = [open, mid, end].map(x => x && x.score !== "" ? Number(x.score) : null);    
+
+            if (vals[0] !== null) openingTotal += vals[0];
+            if (vals[1] !== null) midtermTotal += vals[1];
+            if (vals[2] !== null) endtermTotal += vals[2];
+
+            const present = vals.filter(v => v !== null);    
+
+            const subTotal = present.reduce((a, b) => a + b, 0);    
+            const subAvg = present.length ? subTotal / present.length : 0;    
+            const subGrade = present.length ? gradeBands(subAvg) : "";    
+
+            overallTotal += subTotal;    
+            overallCount += present.length;    
+
+            subjectRows.push({    
+                subject: sub.name,    
+                open: vals[0],    
+                mid: vals[1],    
+                end: vals[2],    
+                total: subTotal,    
+                avg: subAvg,    
+                grade: subGrade    
+            });    
+
+        });    
+
+        const overallAvg = overallCount ? overallTotal / overallCount : 0;    
+        const overallGrade = gradeBands(overallAvg);    
+        const { teacherComment, headComment } = getComments(overallGrade);    
+
+        let body = `    
+        <div class="report-card">    
+
+            <div class="school-header">    
+                <div class="logo-box">    
+                    <img src="logo.jpg" style="width:100%; height:100%; object-fit:contain;">    
+                </div>    
+                <div class="school-title">       
+                    <h3>MENYENYA SDA JUNIOR SCHOOL</h3>    
+                    <p>Report Card</p>    
+                </div>    
+            </div>    
+
+            <div class="report-meta">   
+                <div><b>Class Teacher:</b> ${escapeHtml(classTeacher)}</div>
+                <div><b>Name:</b> ${escapeHtml(s.name)}</div>    
+                <div><b>Admission No:</b> ${escapeHtml(s.adm)}</div>    
+                <div><b>Grade:</b> ${escapeHtml(s.grade)}</div>    
+                <div><b>Stream:</b> ${escapeHtml(s.stream)}</div>    
+                <div><b>Pathway:</b> ${escapeHtml(s.pathway)}</div>    
+                <div><b>Term:</b> ${escapeHtml(term)} &nbsp; <b>Year:</b> ${escapeHtml(year)}</div>    
+            </div>    
+
+            <div class="table-wrap">    
+                <table>    
+                    <tr>    
+                        <th>Subject</th>    
+                        <th>Opening</th>    
+                        <th>Midterm</th>    
+                        <th>Endterm</th>    
+                        <th>Total</th>    
+                        <th>Average</th>    
+                        <th>Grade</th>    
+                    </tr>    
+        `;    
+
+        subjectRows.forEach(r => {    
+            body += `    
+                <tr>    
+                    <td style="text-align:left">${escapeHtml(r.subject)}</td>    
+                    <td>${r.open ?? ""}</td>    
+                    <td>${r.mid ?? ""}</td>    
+                    <td>${r.end ?? ""}</td>    
+                    <td>${r.total}</td>    
+                    <td>${r.avg.toFixed(1)}</td>    
+                    <td>${r.grade}</td>    
+                </tr>`;    
+        });    
+
+        body += `    
+                </table>    
+            </div>    
+
+            <div class="summary-box">    
+                <span class="badge">Overall Total: ${overallTotal}</span>    
+                <span class="badge">Overall Average: ${overallAvg.toFixed(1)}</span>    
+                <span class="badge">Overall Grade: ${overallGrade}</span>    
+
+                <span class="badge">Opening Rank: ${openingRank}</span>
+                <span class="badge">Midterm Rank: ${midtermRank}</span>
+                <span class="badge">Endterm Rank: ${endtermRank}</span>
+
+                <span class="badge">Opening Total: ${openingTotal}</span>
+                <span class="badge">Midterm Total: ${midtermTotal}</span>
+                <span class="badge">Endterm Total: ${endtermTotal}</span>
+
+                <div class="small-note">  
+                    <b>Class Teacher's Remarks:</b> ${teacherComment}    
+                    <br><br>  
+                    <b>Head Teacher's Remarks:</b> ${headComment}    
+                    <br><br>  
+                    <b>Head Teacher Name:</b> MR OKARI LUKE
+                  
+                 
+                   Contact....................
+                    <br><br>  
+                    <b>Opening Date:</b> ${escapeHtml(openingDate)}  
+                    <br>  
+                    <b>Closing Date:</b> ${escapeHtml(closingDate)}   
+                </div>  
+            </div>    
+
+        </div>    
+        `;    
+
+        cards.push(body);    
+    });    
+
+    el("reportsOut").innerHTML = cards.join("");    
+
+    if (!cards.length) toast("No students found for the selected class");    
+}
+  
+  function escapeHtml(v) {  
+    return String(v ?? "")  
+      .replaceAll("&","&amp;")  
+      .replaceAll("<","&lt;")  
+      .replaceAll(">","&gt;")  
+      .replaceAll('"',"&quot;")  
+      .replaceAll("'","&#39;");  
+  }  
+  
+  function escapeAttr(v) {  
+    return escapeHtml(v).replaceAll("\n", " ");  
+  }  
+  
+  // Student table actions  
+  el("studentTable").addEventListener("click", async (e) => {  
+    const btn = e.target.closest("button[data-student-action]");  
+    if (!btn) return;  
+    const adm = btn.dataset.adm;  
+    const action = btn.dataset.studentAction;  
+    if (action === "edit") return editStudent(adm);  
+    if (action === "delete") return deleteStudent(adm);  
+  });  
+  
+  // Subject table actions  
+  el("subjectTable").addEventListener("click", async (e) => {  
+    const btn = e.target.closest("button[data-subject-action]");  
+    if (!btn) return;  
+    const id = btn.dataset.id;  
+    const action = btn.dataset.subjectAction;  
+    if (action === "edit") return editSubject(id);  
+    if (action === "delete") return deleteSubject(id);  
+  });  
+    // Buttons    
+  async function printClassList() {  
+  
+  const grade = el("grade").value;  
+  const stream = el("stream").value;  
+  
+  if (!grade || !stream) {  
+    toast("Select grade and stream first");  
+    return;  
+  }  
+  
+  const students = await getAll("students");  
+  
+  const filtered = students.filter(s =>   
+    s.grade === grade && s.stream === stream  
+  );  
+  
+  if (!filtered.length) {  
+    toast("No students found");  
+    return;  
+  }  
+  
+  let html = `  
+  <div class="report-card">  
+    <div class="school-header">  
+      <div class="logo-box">  
+        <img src="logo.jpg" style="width:100%;height:100%;object-fit:contain;">  
+      </div>  
+      <div class="school-title">  
+        <h3>MENYENYA SDA JUNIOR SCHOOL</h3>  
+        <p>CLASS LIST</p>  
+      </div>  
+    </div>  
+  
+    <div class="summary-box">  
+      <span class="badge">Grade: ${grade}</span>  
+      <span class="badge">Stream: ${stream}</span>  
+      <span class="badge">Total: ${filtered.length}</span>  
+    </div>  
+  
+    <div class="table-wrap">  
+      <table>  
+<tr>  
+  <th>No</th>  
+  <th>Adm</th>  
+  <th>Name</th>  
+  <th>Gender</th>  
+  <th>MATH</th>  
+  <th>ENG</th>  
+  <th>KISW</th>  
+  <th>SCI</th>  
+  <th>AGR</th>  
+  <th>SST</th>  
+  <th>CRE</th>  
+  <th>CAS</th>  
+  <th>PT</th>  
+</tr>  
+  `;  
+  
+  filtered.forEach((s, i) => {  
+  html += `  
+    <tr>  
+      <td>${i + 1}</td>  
+      <td>${escapeHtml(s.adm)}</td>  
+      <td style="text-align:left">${escapeHtml(s.name)}</td>  
+      <td>${escapeHtml(s.gender)}</td>  
+  
+      <td></td>  
+      <td></td>  
+      <td></td>  
+      <td></td>  
+      <td></td>  
+      <td></td>  
+      <td></td>  
+      <td></td>  
+      <td></td>  
+    </tr>  
+  `;  
+});  
+  
+  html += `  
+      </table>  
+    </div>  
+  </div>  
+  `;  
+  
+  // SHOW IN ANALYSIS AREA FOR PRINT  
+  el("analysisOut").innerHTML = html;  
+  
+  // PRINT MODE  
+  showPanel("analysis");  
+  
+  document.body.classList.add("analysis-print");  
+  
+  setTimeout(() => {  
+    window.print();  
+  }, 300);  
+}  
+  // Buttons  
+  el("saveStudentBtn").addEventListener("click", saveStudent);  
+  el("printClassListBtn").addEventListener("click", printClassList); 
+  el("clearStudentBtn").addEventListener("click", () => {  
+    editingStudentAdm = null;  
+    el("saveStudentBtn").textContent = "Save Student";  
+    clearForm(["adm","name","grade","stream","pathway"]);  
+  });  
+  
+  el("saveSubjectBtn").addEventListener("click", saveSubject);  
+  el("clearSubjectBtn").addEventListener("click", () => {  
+    editingSubjectId = null;  
+    el("saveSubjectBtn").textContent = "Add Subject";  
+    clearForm(["subName","subPath"]);  
+  });  
+  
+  el("loadMarksBtn").addEventListener("click", loadMarksStudents);  
+  el("saveMarksBtn").addEventListener("click", saveMarks);  
+  
+  el("generateAnalysisBtn").addEventListener("click", generateAnalysis);  
+  el("printAnalysisBtn").addEventListener("click", () => {  
+  showPanel("analysis");  
+  
+  document.body.classList.remove("report-print");  
+  document.body.classList.add("analysis-print");  
+  
+  setTimeout(() => {  
+    window.print();  
+  }, 300);  
+});  
+  
+  el("generateReportsBtn").addEventListener("click", generateReports);  
+  el("printReportsBtn").addEventListener("click", () => {  
+  showPanel("reports");  
+  
+  document.body.classList.remove("analysis-print");  
+  document.body.classList.add("report-print");  
+  
+  setTimeout(() => {  
+    window.print();  
+  }, 300);  
+});  
+  
+  async function bootstrap() {
+  
+  await storeReady; // 🔥 IMPORTANT FIX
+
+  document.getElementById("loginScreen").style.display = "flex";
+
+  populateAllSelects();
+  await loadStudentsIntoUI();
+  await loadSubjectsIntoUI();
+  toast("System ready");
+}
+  
+  bootstrap().catch(err => {  
+    console.error(err);  
+    toast("System error: check console");  
+  });  
+  
+}); 
+ function login() {
+
+  const schoolId = document.getElementById("loginSchool").value.trim();
+  const user = document.getElementById("loginUser").value.trim();
+  const pass = document.getElementById("loginPass").value.trim();
+  const errorBox = document.getElementById("loginError");
+
+  // SIMPLE HARD CODED LOGIN
+  const demoSchool = "MENYENYA";
+  const demoAdminPass = "MOGENI";
+  const demoTeacherPass = "1234";
+
+  if (!schoolId || !user || !pass) {
+    errorBox.innerText = "Fill all fields";
+    return;
+  }
+
+  // CHECK SCHOOL ID
+  if (schoolId !== demoSchool) {
+    errorBox.innerText = "Wrong School ID";
+    return;
+  }
+
+  // CHECK ROLE
+  if (user === "admin" && pass !== demoAdminPass) {
+    errorBox.innerText = "Wrong admin password";
+    return;
+  }
+
+  if (user === "teacher" && pass !== demoTeacherPass) {
+    errorBox.innerText = "Wrong teacher password";
+    return;
+  }
+
+  // SAVE SESSION
+  window.userRole = user;
+  window.schoolId = schoolId;
+
+  localStorage.setItem("schoolId", schoolId);
+  localStorage.setItem("userRole", user);
+
+  // HIDE LOGIN
+  document.getElementById("loginScreen").style.display = "none";
+
+  applyRolePermissions();
+
+  toast("Login successful: " + user);
+}
+
+window.login = login;
+function generateCharts(rows, subjectNames) {
+
+
+  // ===== EXAM COMPARISON (Top 5 students) =====
+  const top = rows.slice(0, 5);
+
+  const labels = top.map(s => s.name);
+  const data = top.map(s => s.avg);
+
+  const ctx1 = document.getElementById("examComparisonChart").getContext("2d");
+
+  new Chart(ctx1, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Average Marks",
+        data: data
+      }]
+    },
+    options: {
+      responsive: true
+    }
+  });
+
+  // ===== SUBJECT PERFORMANCE (Class Mean per subject) =====
+  const subjectMeans = subjectNames.map(sub => {
+    let total = 0;
+    let count = 0;
+
+    rows.forEach(r => {
+      total += (r.scores[sub] || 0);
+      count++;
+    });
+
+    return count ? total / count : 0;
+  });
+
+  const ctx2 = document.getElementById("subjectPerformanceChart").getContext("2d");
+
+  new Chart(ctx2, {
+    type: "line",
+    data: {
+      labels: subjectNames,
+      datasets: [{
+        label: "Subject Mean",
+        data: subjectMeans
+      }]
+    },
+    options: {
+      responsive: true
+    }
+  });
+}
+function applyRolePermissions() {
+  const role = window.userRole;
+
+  const navButtons = document.querySelectorAll(".nav button");
+
+  if (role === "teacher") {
+
+    // 🔒 Hide all panels except MARKS
+    navButtons.forEach(btn => {
+      const panel = btn.dataset.panel;
+
+      if (panel !== "marks") {
+        btn.style.display = "none";
+      }
+    });
+
+    // 👉 Force open marks panel
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    document.getElementById("marks").classList.add("active");
+
+    // 🔒 Disable system actions
+    const lockIds = [
+      "saveStudentBtn",
+      "saveSubjectBtn",
+      "generateAnalysisBtn",
+      "generateReportsBtn",
+      "printReportsBtn",
+      "printAnalysisBtn",
+      "printClassListBtn"
+    ];
+
+    lockIds.forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn) btn.style.display = "none";
+    });
+
+  }
+
+  if (role === "admin") {
+    // ✅ Admin sees everything
+    navButtons.forEach(btn => btn.style.display = "inline-block");
+  }
+}
+function loadBackupTable() {
+  const file = document.getElementById("backupFile").files[0];
+
+  if (!file) {
+    toast("Select backup file first");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    const data = JSON.parse(e.target.result);
+
+    let html = "";
+
+    for (let store in data) {
+
+      html += `<h3>${store}</h3>`;
+
+      const records = data[store];
+
+      if (!records || records.length === 0) {
+        html += "<p>No data</p>";
+        continue;
+      }
+
+      const headers = Object.keys(records[0]);
+
+      html += "<div class='table-wrap'><table><tr>";
+
+      headers.forEach(h => {
+        html += `<th>${h}</th>`;
+      });
+
+      html += "</tr>";
+
+      records.forEach(row => {
+        html += "<tr>";
+
+        headers.forEach(h => {
+          html += `<td>${row[h] ?? ""}</td>`;
+        });
+
+        html += "</tr>";
+      });
+
+      html += "</table></div><br>";
+    }
+
+    document.getElementById("backupOutput").innerHTML = html;
+  };
+
+  reader.readAsText(file);
+}
+function exportBackup() {
+  const dbName = "ExamDB";
+
+  const request = indexedDB.open(dbName);
+
+  request.onsuccess = function (event) {
+    const db = event.target.result;
+    const stores = Array.from(db.objectStoreNames);
+
+    let data = {};
+    let done = 0;
+
+    stores.forEach(storeName => {
+      const tx = db.transaction(storeName, "readonly");
+      const store = tx.objectStore(storeName);
+      const req = store.getAll();
+
+      req.onsuccess = function () {
+        data[storeName] = req.result;
+        done++;
+
+        if (done === stores.length) {
+          const blob = new Blob([JSON.stringify(data, null, 2)], {
+            type: "application/json"
+          });
+
+          const url = URL.createObjectURL(blob);
+
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "exam_backup.json";
+          a.click();
+
+          URL.revokeObjectURL(url);
+        }
+      };
+    });
+  };
+}
+
+function downloadFile(data) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: "application/json"
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "exam_backup.json";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+function showBackupTable() {
+  const dbName = "ExamDB";
+
+  const request = indexedDB.open(dbName);
+
+  request.onsuccess = function (event) {
+    const db = event.target.result;
+    const stores = Array.from(db.objectStoreNames);
+
+    let html = "";
+
+    let done = 0;
+
+    if (stores.length === 0) {
+      document.getElementById("backupTableOutput").innerHTML = "No data found";
+      return;
+    }
+
+    stores.forEach(storeName => {
+      const tx = db.transaction(storeName, "readonly");
+      const store = tx.objectStore(storeName);
+      const req = store.getAll();
+
+      req.onsuccess = function () {
+        const data = req.result;
+
+        html += `<h3>${storeName.toUpperCase()}</h3>`;
+
+        if (!data.length) {
+          html += "<p>No records</p>";
+        } else {
+          const headers = Object.keys(data[0]);
+
+          html += "<div class='table-wrap'><table><tr>";
+
+          headers.forEach(h => {
+            html += `<th>${h}</th>`;
+          });
+
+          html += "</tr>";
+
+          data.forEach(row => {
+            html += "<tr>";
+
+            headers.forEach(h => {
+              html += `<td>${row[h] ?? ""}</td>`;
+            });
+
+            html += "</tr>";
+          });
+
+          html += "</table></div><br>";
+        }
+
+        done++;
+
+        if (done === stores.length) {
+          document.getElementById("backupTableOutput").innerHTML = html;
+
+          // show panel
+          document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+          document.getElementById("backupTableArea").classList.add("active");
+        }
+      };
+    });
+  };
+}
+function restoreBackup() {
+  const fileInput = document.getElementById("restoreFile");
+
+  fileInput.click();
+
+  fileInput.onchange = function () {
+    const file = fileInput.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      try {
+        const data = JSON.parse(e.target.result);
+
+        const request = indexedDB.open("ExamDB");
+
+        request.onsuccess = function (event) {
+          const db = event.target.result;
+
+          const stores = Object.keys(data);
+
+          let done = 0;
+
+          stores.forEach(storeName => {
+
+            const tx = db.transaction(storeName, "readwrite");
+            const store = tx.objectStore(storeName);
+
+            // ⚠️ CLEAR OLD DATA FIRST
+            store.clear();
+
+            data[storeName].forEach(item => {
+              store.put(item);
+            });
+
+            tx.oncomplete = function () {
+              done++;
+
+              if (done === stores.length) {
+                alert("Restore complete ✅");
+
+                // reload UI
+                location.reload();
+              }
+            };
+          });
+        };
+
+      } catch (err) {
+        alert("Invalid backup file ❌");
+      }
+    };
+
+    reader.readAsText(file);
+  };
+}
+</script>
+</body>  
+</html>
